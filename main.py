@@ -47,6 +47,10 @@ def ProcessCommand(Command):
     print(Command)
     if Command == 'JKL':    #if command is Valve Open command
         Valve_Open()
+        
+        time.sleep(15)      # leave valve open for 15s  [ EDIT ]
+        
+        Valve_Close()       # close the valve           [ EDIT ]
     elif Command == 'MNO':  #if command is Valve Close command
         Valve_Close()
 #    elif Command == 'ABC':  #idle
