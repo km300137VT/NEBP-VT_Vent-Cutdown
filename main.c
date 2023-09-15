@@ -51,17 +51,17 @@ int main(void){
         [ NOTE :: starts with LED ON, Resistor ON, Servo OFF ]
         [ NOTE :: P1DIR - Set Outputs; P1OUT - when to send data to a pin; THIS CODE SEGMENT IS INITIAL OUTPUTS ]
      */
-    P1DIR |= ON_LED; //P1.2 LED  enable output          // [ NOTE :: set P1DIR to 00000100 aka set Pin 2 to HIGH ]
+    P1DIR |= ON_LED; //P1.2 LED  enable output          // [ NOTE :: set P1DIR to 00000100 aka set Pin 2 (LED) to HIGH ]
     P1OUT |= ON_LED; //LED on
-    P1DIR |= SERVO; // P1.SERVO enable output           // [ NOTE :: set P1DIR to 10000100 aka set Pin 7 to HIGH ]
+    P1DIR |= SERVO; // P1.SERVO enable output           // [ NOTE :: set P1DIR to 10000100 aka set Pin 7 (SERVO) to HIGH ]
     P1OUT &=~(SERVO);//Start off
-    P1DIR |= RESISTOR; //P1.5 RESISTOR enable output    // [ NOTE :: set P1DIR to 10100100 aka set Pin 5 to HIGH ]
+    P1DIR |= RESISTOR; //P1.5 RESISTOR enable output    // [ NOTE :: set P1DIR to 10100100 aka set Pin 5 (Resistor) to HIGH ]
     P1OUT |=(RESISTOR);//Start on
 
 
     // Configure input pin
-    P1DIR &= ~(XBEE3);//P1.6(XBEE3) enable input
-    P1IES &=~(XBEE3); //Start looking for low to high edge
+    P1DIR &= ~(XBEE3);//P1.6(XBEE3) enable input              // [ NOTE :: Pin 6 (XBEE3) is set by this operation : P1DIR & 1011111 ]
+    P1IES &=~(XBEE3); //Start looking for low to high edge    //
     P1IFG &=~ (XBEE3);
     P1IE |=(XBEE3);  // Interrupt Enable
 
