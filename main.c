@@ -42,7 +42,7 @@ unsigned long overflow_counter; // Used by delay62MS function & timer
  */
 int main(void){
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer    [ NOTE :: watchdog timer protects system against failure of software; resets when limit reached ]
-    servo_status= CLOSED;                                 [ NOTE :: set servo_status to 0 ]
+    servo_status= CLOSED;                              // [ NOTE :: set servo_status to 0 ]
 
 
     // Configure output pins
