@@ -46,7 +46,10 @@ int main(void){
 
 
     // Configure output pins
-    // [ NOTE :: '|=' : notation to set registers ]
+    /*
+        [ NOTE :: Pin 2 - LED; Pin 5 - Resistor; Pin 7 - SERVO ]
+        [ NOTE :: starts with LED ON, Resistor ON, Servo OFF ]
+     */
     P1DIR |= ON_LED; //P1.2 LED  enable output          // [ NOTE :: set P1DIR to 00000100 aka set Pin 2 to HIGH ]
     P1OUT |= ON_LED; //LED on
     P1DIR |= SERVO; // P1.SERVO enable output           // [ NOTE :: set P1DIR to 1000000 aka set Pin 7 to HIGH ]
