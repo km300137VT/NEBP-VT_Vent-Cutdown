@@ -66,8 +66,8 @@ int main(void){
     P1IE |=(XBEE3);  // Interrupt Enable
 
     //MCLK = SMCLK = 1MHz
-    DCOCTL =0;
-    BCSCTL1 = CALBC1_1MHZ;
+    DCOCTL =0;                // [ NOTE :: Set internal DOC (Digitally Controller Oscillator)
+    BCSCTL1 = CALBC1_1MHZ;    //
     DCOCTL = CALDCO_1MHZ;
 
     initTimer_A();
