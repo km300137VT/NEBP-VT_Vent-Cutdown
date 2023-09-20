@@ -65,10 +65,10 @@ int main(void){
     P1IFG &=~ (XBEE3);                                        // [ NOTE :: Because of the condition previously mentioned, this code will clear any interrupt caused by P1IFG ]
     P1IE |=(XBEE3);  // Interrupt Enable
 
-    // // [ BG INFO :: the internal DOC (Digitally Controller Oscillator) is configured with 2 registers-- BCSCTL1 and DCOCTL (basic clock system control 1 and DCO control)
-    //MCLK = SMCLK = 1MHz        [ NOTE :: set master clock to sub-main clock; the master clock is sourced from DCOCTL which has a frequency of approc 1.1MHz ]
-    DCOCTL =0;                // [ NOTE :: Set internal DOC (Digitally Controller Oscillator)
-    BCSCTL1 = CALBC1_1MHZ;    //
+    // [ BG INFO :: the internal DOC (Digitally Controller Oscillator) is configured with 2 registers-- BCSCTL1 and DCOCTL (basic clock system control 1 and DCO control) ]
+    //MCLK = SMCLK = 1MHz        [ NOTE :: master clock and sub-main clock are sourced from DCOCTL which has a frequency of approx 1MHz (calibrated value I think for this device) ]
+    DCOCTL =0;                // [ NOTE :: this clears DCOCTL and sets it to the lowest setting ]
+    BCSCTL1 = CALBC1_1MHZ;    // [ NOTE :: Using the preconfigured (in the factory) bytes as a load in the respective registers (BCSCTL1 and DCOCTL) to get approx 1MHz)
     DCOCTL = CALDCO_1MHZ;
 
     initTimer_A();
