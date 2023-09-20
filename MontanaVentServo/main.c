@@ -69,7 +69,7 @@ int main(void){
     //MCLK = SMCLK = 1MHz        [ NOTE :: master clock and sub-main clock are sourced from DCOCTL which has a frequency of approx 1MHz (calibrated value I think for this device) ]
     DCOCTL =0;                // [ NOTE :: this clears DCOCTL and sets it to the lowest setting ]
     BCSCTL1 = CALBC1_1MHZ;    // [ NOTE :: Using the preconfigured (in the factory) bytes as a load in the respective registers (BCSCTL1 and DCOCTL) to get approx 1MHz)
-    DCOCTL = CALDCO_1MHZ;
+    DCOCTL = CALDCO_1MHZ;     // [ NOTE :: IN CONCLUSION -- this part of the code is configuring the board so that DCOCTL is running at 1 MHz ]
 
     initTimer_A();
     __enable_interrupt();
