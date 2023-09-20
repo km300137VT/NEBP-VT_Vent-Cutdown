@@ -61,7 +61,7 @@ int main(void){
 
     // Configure input pin
     P1DIR &= ~(XBEE3);//P1.6(XBEE3) enable input              // [ NOTE :: Pin 6 (XBEE3) is set by this operation : P1DIR & 1011111 ]
-    P1IES &=~(XBEE3); //Start looking for low to high edge    // [ NOTE :: This will interrupt the when Pin 6 Changes from LOW to HIGH ] -- [ NOTE :: when P1IES 0 -> 1, P1IFG is set, so an interrupt will occur immediately ]
+    P1IES &=~(XBEE3); //Start looking for low to high edge    // [ NOTE :: This will cause an interrupt when Pin 6 Changes from LOW to HIGH ] -- [ NOTE :: when P1IES 0 -> 1, P1IFG is set, so an interrupt will occur immediately ]
     P1IFG &=~ (XBEE3);                                        // [ NOTE :: Because of the condition previously mentioned, this code will clear any interrupt caused by P1IFG ]
     P1IE |=(XBEE3);  // Interrupt Enable
 
