@@ -65,7 +65,7 @@ int main(void){
     P1IFG &=~ (XBEE3);                                        // [ NOTE :: Because of the condition previously mentioned, this code will clear any interrupt caused by P1IFG ]
     P1IE |=(XBEE3);  // Interrupt Enable
 
-    //MCLK = SMCLK = 1MHz
+    //MCLK = SMCLK = 1MHz        [ NOTE :: set master clock to sub-main clock; the master clock is sourced from DCOCTL which has a frequency of approc 1.1MHz ]
     DCOCTL =0;                // [ NOTE :: Set internal DOC (Digitally Controller Oscillator)
     BCSCTL1 = CALBC1_1MHZ;    //
     DCOCTL = CALDCO_1MHZ;
