@@ -14,9 +14,9 @@ String NMEA1;//Variable for firts NMEA sentance (We only need to use the  GPGGA 
 String NMEA2;  //We will use this variable to hold our second NMEA sentence- we are using 2 NMEA lines so we can get both GPGGA and GPRMC not only the GPRMC
 
 float altitudeGPS;
-float latitudeGPS, longitudeGPS;  // VC
+float latitudeGPS, longitudeGPS;  // EDIT
 const float targetHight=651.0; ///blacksburg altitude is 618Meters above sea level- target altitude need s to be added to that // GPS works on meters
-const float top=0.0, bottom=0.0, left=0.0, right=0.0; // VC
+const float top=0.0, bottom=0.0, left=0.0, right=0.0; // EDIT
 
 char c; //This character only purpose is to we can raed the characters from the string NMEA lines
 
@@ -39,18 +39,21 @@ void loop() {
  readGPS();
  Serial.println(GPS.altitude);
 
- Serial.println(GPS.latitude);  // VC
- Serial.println(GPS.longitude); // VC
+ Serial.println(GPS.latitude);  // EDIT
+ Serial.println(GPS.longitude); // EDIT
  
  altitudeGPS=GPS.altitude; // Traget altitude has to adjusted as VT has an altitude of 604 meters above sea level.
  
- latitudeGPS=GPS.latitude;    // VC
- longitudeGPS=GPS.longitude;  // VC
- 
+ latitudeGPS=GPS.latitude;    // EDIT
+ longitudeGPS=GPS.longitude;  // EDIT
+
+convertCoordinate(&latitudeGPS);  //EDIT  - Convert DDMM.MMMM to Decimal Degrees
+ convertCoordinate(&longitudeGPS); // EDIT
+  
  Serial.println(altitudeGPS);
  
- Serial.println(latitudeGPS);   // VC
- Serial.println(longitudeGPS);  // VC
+ Serial.println(latitudeGPS);   // EDIT
+ Serial.println(longitudeGPS);  // EDIT
 
   if(altitudeGPS>targetHight){
   myservo.write(90);
@@ -60,7 +63,8 @@ void loop() {
   myservo.write(0);
   delay(1000);
  }
- 
+
+  // EDIT
  if     (latitudeGPS>top   || latitudeGPS<bottom) {}
  else if(longitudeGPS<left || longitudeGPS>right) {}
  else {
@@ -98,4 +102,14 @@ void clearGPS(){ // clear old and corrupt data from serial port
     c=GPS.read();
   }
   GPS.parse(GPS.lastNMEA());//Parse the last good NMEA sentace
+}
+
+// Geofence
+void convertCoordinate(float *coordinate) {
+  int degrees = *coordinate / 100;              //degrees
+  float minutes = *coordinate - 100 * degrees;  // minutes
+  float minutes2 = minutes - (int)minutes;
+  minutes /= 60;                                // minutes to degrees
+  minutes2 /= 3600;                              // minutes to degrees
+  *coordinate = degrees + minutes + minutes2;
 }
