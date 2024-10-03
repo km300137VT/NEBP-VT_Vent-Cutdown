@@ -5,7 +5,7 @@ SoftwareSerial mySerial(3,2);//Initialize the software serial port (We are creat
 Adafruit_GPS GPS(&mySerial);//Creates the GPS object
 
 // Define the servo pin:
-#define servoPin 9
+#define servoPin 13
 
 // Create a new servo object:
 Servo myservo;
@@ -15,14 +15,14 @@ String NMEA2;  //We will use this variable to hold our second NMEA sentence- we 
 
 float altitudeGPS;
 float latitudeGPS, longitudeGPS;  // EDIT
-const float targetHight=651.0; ///blacksburg altitude is 618Meters above sea level- target altitude need s to be added to that // GPS works on meters
+const float targetHight=650.19; ///blacksburg altitude is 618Meters above sea level- target altitude need s to be added to that // GPS works on meters
 const float top=0.0, bottom=0.0, left=0.0, right=0.0; // EDIT
 
 char c; //This character only purpose is to we can raed the characters from the string NMEA lines
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);//Turns on normal serial monitor 
+  Serial.begin(9600);//Turns on normal serial monitor 
   GPS.begin(9600);// Turn on GPS at 9600 baud
   GPS.sendCommand("$PGCMD,33,0*6D");//Turns off antenna update data that tends to interfere with the GPGGA & GPRMC lines of data we need
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); //Set update rate to 10HZ
@@ -31,10 +31,11 @@ void setup() {
    // Attach the Servo variable to a pin:
   myservo.attach(servoPin);
    pinMode(13, OUTPUT);
+   myservo.write(180);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+ pinMode(13, OUTPUT);
   //  digitalWrite(ENABLE_PIN, HIGH);
  readGPS();
  Serial.println(GPS.altitude);
@@ -54,25 +55,26 @@ convertCoordinate(&latitudeGPS);  //EDIT  - Convert DDMM.MMMM to Decimal Degrees
  
  Serial.println(latitudeGPS);   // EDIT
  Serial.println(longitudeGPS);  // EDIT
+ if (altitudeGPS > targetHight) {
+    myservo.write(0);
+    delay(20000);
+    myservo.write(180);
+    delay(1000);
+  } else {
+    myservo.write(180); // Ensure servo stays in neutral position when not moving
+  }
 
-  if(altitudeGPS>targetHight){
-  myservo.write(90);
-  delay(1000);
-  myservo.write(180);
-  delay(1000);
-  myservo.write(0);
-  delay(1000);
- }
-
-  // EDIT
- if     (latitudeGPS>top   || latitudeGPS<bottom) {}
- else if(longitudeGPS<left || longitudeGPS>right) {}
- else {
-  myservo.write(90);
- }
+//   // EDIT
+//  if     (latitudeGPS>top   || latitudeGPS<bottom) {}
+//  else if(longitudeGPS<left || longitudeGPS>right) {}
+//  else {
+//   myservo.write(90);
+//  }
 
 }
 
+//GPS precion fuctions
+//***********************************************************************
 void readGPS(){
   clearGPS();
   while(!GPS.newNMEAreceived()){//loop until we get a proper NMEA sentance 
@@ -103,6 +105,7 @@ void clearGPS(){ // clear old and corrupt data from serial port
   }
   GPS.parse(GPS.lastNMEA());//Parse the last good NMEA sentace
 }
+//****************************************************************************
 
 // Geofence
 void convertCoordinate(float *coordinate) {
